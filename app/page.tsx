@@ -31,6 +31,7 @@ export default function Home() {
   const [menu, setMenu] = useState(false);
   const [heroOnly, setHeroOnly] = useState(false);
   const [displayFont, setDisplayFont] = useState<DisplayFont>("bodoni");
+  const [darkTheme, setDarkTheme] = useState(false);
   const [active, setActive] = useState<number | null>(null);
   const [submitted, setSubmitted] = useState(false);
   const dialog = useRef<HTMLDialogElement>(null);
@@ -140,7 +141,7 @@ export default function Home() {
     window.scrollTo({ top: 0, behavior: "instant" });
   }
 
-  return <div className={`site site--${displayFont}${heroOnly ? " site--hero" : ""}`}>
+  return <div className={`site site--${displayFont}${heroOnly ? " site--hero" : ""}${darkTheme ? " site--dark" : ""}`}>
     <a className="skip" href="#sisalto">Siirry sisältöön</a>
     <aside className="preview-switch" aria-label="Luonnoksen vertailu" inert={menu || active !== null}>
       <div className="preview-group">
@@ -154,6 +155,13 @@ export default function Home() {
         <span>OTSIKOT</span>
         <div className="preview-options" role="group" aria-label="Valitse otsikkofontti">
           {displayFonts.map(font => <button type="button" key={font.id} aria-pressed={displayFont === font.id} onClick={() => setDisplayFont(font.id)}>{font.label}</button>)}
+        </div>
+      </div>
+      <div className="preview-group">
+        <span>TEEMA</span>
+        <div className="preview-options" role="group" aria-label="Valitse teema">
+          <button type="button" aria-pressed={!darkTheme} onClick={() => setDarkTheme(false)}>Vaalea</button>
+          <button type="button" aria-pressed={darkTheme} onClick={() => setDarkTheme(true)}>Tumma</button>
         </div>
       </div>
     </aside>

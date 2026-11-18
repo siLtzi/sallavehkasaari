@@ -23,6 +23,7 @@ Avaa terminaalin ilmoittama paikallinen osoite. Tuotantokoonti: `npm run build`.
 - Mobiilivalikko avautuu pehmeästi ja linkit ilmestyvät porrastetusti. Näppäimistöfokus pysyy valikossa, Esc sulkee sen ja reduced-motion-asetus poistaa animaatiot.
 - Luonnoksen vertailukytkimellä voi valita koko etusivun tai koko näytön hero-aloituksen. Hero-versiossa hampurilaisvalikko avaa sivun muut osiot yksitellen; logosta pääsee takaisin aloitukseen. Valinta on vain esikatselua varten eikä tallennu.
 - Luonnoksen otsikkofonttia voi vertailla Bodoni Modan, Poiret Onen ja Dorsan välillä. Fonttivalinta ei tallennu.
+- Luonnoksen teemavalinnalla voi vertailla nykyistä vaaleaa ja tummaa värimaailmaa. Valinta ei tallennu.
 - Pakettityypin vaihto häivyttää vanhat paketit ennen uusia; reduced-motion näyttää sisällön ilman liikettä tai häivytystä.
 
 ## Sisältö ja jatkokehitys

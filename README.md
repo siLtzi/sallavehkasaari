@@ -13,7 +13,8 @@ Avaa terminaalin ilmoittama paikallinen osoite. Tuotantokoonti: `npm run build`.
 
 ## Toteutus
 
-- `app/page.tsx`: kuvallinen aloitus, kuvaustyypeittäin ryhmitelty portfolio ja kuvakatselin, esittely, kuvausprosessi, mobiilivalikko ja yhteydenottolomake.
+- `app/page.tsx`: kuvallinen aloitus portfoliovalikoimalla ja kuvakatselimella, esittely, kuvausprosessi, mobiilivalikko ja yhteydenottolomake.
+- Etusivun portfoliolinkki osoittaa tulevalle `/portfolio`-sivulle, jota ei ole vielä toteutettu.
 - `app/Pricing.tsx`: pakettivalitsin ja avattavat pakettien sisällöt.
 - `app/globals.css`: responsiivinen ulkoasu, liike ja reduced-motion-tuki.
 - `app/layout.tsx`: suomenkielisyys, metatiedot ja fontit. Luonnoksessa hakukoneindeksointi on estetty.
@@ -28,7 +29,7 @@ Avaa terminaalin ilmoittama paikallinen osoite. Tuotantokoonti: `npm run build`.
 
 Valokuvat ovat Sallan nykyisen sivuston julkisia Pixieset-kuvia, joita ladataan suoraan alkuperäisestä osoitteesta. Lähde: https://www.sallavehkasaari.fi/ . Google Fonts toimittaa Bodoni Moda-, Poiret One-, Dorsa- ja DM Sans -kirjasimet; niiden puuttuessa käytetään järjestelmäfontteja. Tuotantoon kuvat kannattaa siirtää luvallisesti omaan mediahakemistoon tai Sanityyn ja optimoida Next Imagella, fontit paikallisiksi.
 
-Animaatiot: portfoliokuvat suurenevat hienovaraisesti osoittimella ja pakettityypin vaihto häivyttää sisällön. Reduced-motion poistaa liikkeen. Portfoliokuvat avautuvat myös näppäimistöllä.
+Animaatiot: herokuva ja logo ilmestyvät rauhallisesti, ja osioiden otsikot sekä kuvat tulevat näkyviin kevyesti sivua selatessa. Portfoliokuvat suurenevat hienovaraisesti osoittimella ja pakettityypin vaihto häivyttää sisällön. Reduced-motion poistaa liikkeen. Portfoliokuvat avautuvat myös näppäimistöllä.
 
 Tekstit ovat alustavaa uudelleenkirjoitusta toimitetuista referensseistä. Paketit pohjautuvat nykyisen sivuston hinnastoon, mutta valikoima on rajattu suunnitteluluonnosta varten. Vahvista tekstit, hinnat ja lopullinen palveluvalikoima Sallan kanssa.
 

@@ -16,9 +16,8 @@ const photos = [
   { src: base + "Myw0Gj/DSC07359-eb679f32-1500.jpg", label: "Perhekuvaus", alt: "Perhe yhdessä ulkona" },
 ];
 const portrait = base + "lD8E0G/luontominabest-b2ab39ef-1500.jpg";
-const portfolioGroups = [[4, 1], [5, 2], [6, 3], [7, 8]];
-const portfolioOrder = portfolioGroups.flat();
-const navigation = [["portfolio", "Portfolio"], ["minusta", "Minusta"], ["info", "Info"], ["hinnasto", "Hinnasto"], ["yhteys", "Ota yhteyttä"]];
+const portfolioOrder = [4, 5, 6, 8];
+const navigation = [["/portfolio", "Portfolio"], ["#minusta", "Minusta"], ["#info", "Info"], ["#hinnasto", "Hinnasto"], ["#yhteys", "Ota yhteyttä"]];
 const displayFonts = [
   { id: "bodoni", label: "Bodoni Moda" },
   { id: "poiret", label: "Poiret One" },
@@ -38,6 +37,52 @@ export default function Home() {
   const focusBefore = useRef<HTMLElement | null>(null);
   const menuButton = useRef<HTMLButtonElement>(null);
   const navigationRef = useRef<HTMLElement>(null);
+  const mainRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const main = mainRef.current;
+    if (!main || !("IntersectionObserver" in window) || !("animate" in Element.prototype)) return;
+
+    const elements = main.querySelectorAll<HTMLElement>(
+      ".about-image, .about-copy, .experience-section > div:first-child, .experience-copy > p, .prices-heading > .eyebrow, .prices-heading > h2, .prices-heading > p, .contact-heading",
+    );
+    const motion = matchMedia("(prefers-reduced-motion: reduce)");
+    const revealed = new WeakSet<Element>();
+    const animations = new Set<Animation>();
+    const observer = new IntersectionObserver(entries => {
+      if (motion.matches) return;
+      entries.forEach(entry => {
+        if (!entry.isIntersecting || revealed.has(entry.target)) return;
+        const element = entry.target;
+        revealed.add(element);
+        observer.unobserve(element);
+        const animation = element.animate(
+          [{ opacity: 0, transform: "translateY(14px)" }, { opacity: 1, transform: "translateY(0)" }],
+          { duration: 750, easing: "cubic-bezier(.22, 1, .36, 1)" },
+        );
+        animations.add(animation);
+        animation.onfinish = () => animations.delete(animation);
+      });
+    }, { rootMargin: "0px 0px -5% 0px", threshold: 0.01 });
+
+    function updateMotion() {
+      if (motion.matches) {
+        observer.disconnect();
+        animations.forEach(animation => animation.cancel());
+        animations.clear();
+      } else {
+        elements.forEach(element => { if (!revealed.has(element)) observer.observe(element); });
+      }
+    }
+
+    updateMotion();
+    motion.addEventListener("change", updateMotion);
+    return () => {
+      motion.removeEventListener("change", updateMotion);
+      observer.disconnect();
+      animations.forEach(animation => animation.cancel());
+    };
+  }, []);
 
   useEffect(() => {
     if (!menu) return;
@@ -118,7 +163,7 @@ export default function Home() {
       </a>
       <nav ref={navigationRef} className={menu ? "navigation is-open" : "navigation"} id="navigation" aria-label="Päänavigaatio">
         <p className="menu-eyebrow">SALLA VEHKASAARI · VALOKUVAAJA</p>
-        <div className="menu-links">{navigation.map(([id, label]) => <a href={`#${id}`} key={id} onClick={() => setMenu(false)}>{label}</a>)}</div>
+        <div className="menu-links">{navigation.map(([href, label]) => <a href={href} key={href} onClick={() => setMenu(false)}>{label}</a>)}</div>
         <div className="menu-visual" aria-hidden="true"><img src={photos[5].src} alt="" /><span>PIRKKALA &amp; TAMPERE</span></div>
       </nav>
       <button ref={menuButton} className="menu-button" aria-expanded={menu} aria-controls="navigation" onClick={() => setMenu(!menu)}>
@@ -126,7 +171,7 @@ export default function Home() {
       </button>
     </header>
 
-    <main id="sisalto" inert={menu}>
+    <main ref={mainRef} id="sisalto" inert={menu}>
       <section className="hero" aria-label="Salla Vehkasaari Valokuvaus">
         <div className="hero-art">
           {heroOnly && <picture className="hero-fullscreen">
@@ -134,26 +179,19 @@ export default function Home() {
             <img src={base + "KvYRJx/DSC04519-9680c586-1500.jpg"} alt="Pariskunta istuu kallioisessa maisemassa" fetchPriority="high" />
           </picture>}
           <div className="hero-images">
-            <div className="hero-image hero-image-side"><img src={photos[4].src} alt="" /></div>
-            <div className="hero-image hero-image-main"><img src={photos[0].src} alt={photos[0].alt} fetchPriority="high" /></div>
-            <div className="hero-image hero-image-side"><img src={photos[6].src} alt="" /></div>
+            {portfolioOrder.map(index => <button type="button" className="hero-image" key={index} onClick={() => openPhoto(index)} aria-label={`Avaa kuva: ${photos[index].alt}`}>
+              <img src={photos[index].src} alt="" />
+            </button>)}
           </div>
           {heroOnly && <img className="hero-logo" src="/SV%20logo.png" alt="" width={2172} height={724} />}
         </div>
-        <div className="hero-bottom"><h1>Valokuvaaja Salla Vehkasaari</h1><p>Pirkkala &amp; Tampere</p><a href="#portfolio">Tutustu kuviin <span aria-hidden="true">↓</span></a></div>
-      </section>
-
-      <section className="portfolio-section section-wrap" id="portfolio">
-        <div className="portfolio-heading"><h2>Portfolio</h2></div>
-        <div className="portfolio-grid">
-          {portfolioGroups.map(group => <section className="portfolio-group" key={photos[group[0]].label}>
-            <h3>{photos[group[0]].label}</h3>
-            <div className="portfolio-photos">
-              {group.map(index => <button className="portfolio-item" key={index} onClick={() => openPhoto(index)} aria-label={`Avaa kuva: ${photos[index].alt}`}>
-                <span className="portfolio-image"><img src={photos[index].src} alt={photos[index].alt} loading="lazy" /></span>
-              </button>)}
-            </div>
-          </section>)}
+        <div className="hero-bottom">
+          <h1>Valokuvaaja Salla Vehkasaari</h1>
+          <p>Pirkkala &amp; Tampere</p>
+          <div className="hero-portfolio-link">
+            <a href="/portfolio" aria-describedby="portfolio-coming-soon">Katso portfolio <Arrow /></a>
+            <span id="portfolio-coming-soon">Portfolio-sivu tulossa</span>
+          </div>
         </div>
       </section>
 
@@ -193,7 +231,7 @@ export default function Home() {
 
     <footer inert={menu}>
       <a href="#" className="footer-brand" aria-label="Salla Vehkasaari, etusivu"><img src="/sv.png" alt="" width={500} height={500} /><span>Salla Vehkasaari<small>VALOKUVAAJA</small></span></a>
-      <div className="footer-links"><a href="#portfolio">Portfolio</a><a href="#minusta">Minusta</a><a href="#hinnasto">Hinnasto</a><a href="#yhteys">Yhteys</a><a href="https://www.instagram.com/sallavehkasaari/" target="_blank" rel="noreferrer">Instagram ↗</a></div>
+      <div className="footer-links"><a href="/portfolio">Portfolio</a><a href="#minusta">Minusta</a><a href="#hinnasto">Hinnasto</a><a href="#yhteys">Yhteys</a><a href="https://www.instagram.com/sallavehkasaari/" target="_blank" rel="noreferrer">Instagram ↗</a></div>
       <div className="footer-bottom"><span>© {new Date().getFullYear()} Salla Vehkasaari</span><a href="#">Takaisin ylös ↑</a></div>
     </footer>
 

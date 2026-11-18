@@ -1,0 +1,6 @@
+{
+  "name": "salla-vehkasaari", "version": "0.1.0", "private": true,
+  "scripts": { "dev": "next dev --webpack", "build": "next build --webpack", "start": "next start", "typecheck": "tsc --noEmit" },
+  "dependencies": { "next": "16.0.8", "react": "19.2.1", "react-dom": "19.2.1" },
+  "devDependencies": { "typescript": "^5", "@types/node": "^20", "@types/react": "^19", "@types/react-dom": "^19" }
+}

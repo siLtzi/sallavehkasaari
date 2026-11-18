@@ -13,7 +13,7 @@ Avaa terminaalin ilmoittama paikallinen osoite. Tuotantokoonti: `npm run build`.
 
 ## Toteutus
 
-- `app/page.tsx`: kuvallinen aloitus, tiivis portfolioruudukko ja kuvakatselin, esittely, kuvausprosessi, mobiilivalikko ja yhteydenottolomake.
+- `app/page.tsx`: kuvallinen aloitus, kuvaustyypeittäin ryhmitelty portfolio ja kuvakatselin, esittely, kuvausprosessi, mobiilivalikko ja yhteydenottolomake.
 - `app/Pricing.tsx`: pakettivalitsin ja avattavat pakettien sisällöt.
 - `app/globals.css`: responsiivinen ulkoasu, liike ja reduced-motion-tuki.
 - `app/layout.tsx`: suomenkielisyys, metatiedot ja fontit. Luonnoksessa hakukoneindeksointi on estetty.

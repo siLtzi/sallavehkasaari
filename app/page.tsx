@@ -13,9 +13,11 @@ const photos = [
   { src: base + "9k40A5/DSC00474-2c415b5c-1500.jpg", label: "Parikuvaus", alt: "Parikuva Sallan portfoliosta" },
   { src: base + "Paeywn/11-0854efcd-1500.jpg", label: "Potrettikuvaus", alt: "Ylioppilas metsässä" },
   { src: base + "8pDJe1/DSC09269-de40e7d9-1500.jpg", label: "Perhekuvaus", alt: "Perhekuva Sallan portfoliosta" },
+  { src: base + "Myw0Gj/DSC07359-eb679f32-1500.jpg", label: "Perhekuvaus", alt: "Perhe yhdessä ulkona" },
 ];
 const portrait = base + "lD8E0G/luontominabest-b2ab39ef-1500.jpg";
-const portfolioOrder = [4, 5, 6, 1, 7, 2, 3];
+const portfolioGroups = [[4, 1], [5, 2], [6, 3], [7, 8]];
+const portfolioOrder = portfolioGroups.flat();
 const navigation = [["portfolio", "Portfolio"], ["minusta", "Minusta"], ["info", "Info"], ["hinnasto", "Hinnasto"], ["yhteys", "Ota yhteyttä"]];
 const displayFonts = [
   { id: "bodoni", label: "Bodoni Moda" },
@@ -142,12 +144,16 @@ export default function Home() {
       </section>
 
       <section className="portfolio-section section-wrap" id="portfolio">
-        <div className="portfolio-heading"><h2>Portfolio</h2><p>Häät <span aria-hidden="true">·</span> Parit <span aria-hidden="true">·</span> Potretit <span aria-hidden="true">·</span> Perheet</p></div>
+        <div className="portfolio-heading"><h2>Portfolio</h2></div>
         <div className="portfolio-grid">
-          {portfolioOrder.map(index => <button className="portfolio-item" key={index} onClick={() => openPhoto(index)} aria-label={`Avaa kuva: ${photos[index].alt}`}>
-            <span className="portfolio-image"><img src={photos[index].src} alt={photos[index].alt} loading="lazy" /></span>
-            <span className="portfolio-caption">{photos[index].label}</span>
-          </button>)}
+          {portfolioGroups.map(group => <section className="portfolio-group" key={photos[group[0]].label}>
+            <h3>{photos[group[0]].label}</h3>
+            <div className="portfolio-photos">
+              {group.map(index => <button className="portfolio-item" key={index} onClick={() => openPhoto(index)} aria-label={`Avaa kuva: ${photos[index].alt}`}>
+                <span className="portfolio-image"><img src={photos[index].src} alt={photos[index].alt} loading="lazy" /></span>
+              </button>)}
+            </div>
+          </section>)}
         </div>
       </section>
 
